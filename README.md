@@ -1,2 +1,3 @@
-# HTML_Canvas1
-HTML5のCanvasを使ったアニメーションです
+# HTML5のCanvasを使ったアニメーション
+https://gn3.jp
+で使用しているアニメーションです
