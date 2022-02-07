@@ -71,21 +71,15 @@ function Ball(x,y,d) {
 		c.fill();
 	}
 	this.update = function(){
+		if(this.x-ballSize < 0 || this.x+ballSize > canvas.clientWidth){
+			this.px = -this.px;
+		}
 		var newX = this.x+this.speed*ballSpeed*this.px;
-		if(newX < 0){
-			newX = canvas.width;
-		}
-		else if(newX >= canvas.width){
-			newX = 0;
-		}
 		this.x = newX;
+		if(this.y-ballSize < 0 || this.y+ballSize > canvas.clientHeight){
+			this.py = -this.py;
+		}
 		var newY = this.y+this.speed*ballSpeed*this.py;
-		if(newY < 0){
-			newY = canvas.height;
-		}
-		else if(newY >= canvas.height){
-			newY = 0;
-		}
 		this.y = newY;
 	}
 }
@@ -95,12 +89,12 @@ function directionToXYPower(d) {
 	var dy = 0;
 	if(d >= 270){
 		var i1 = d-270;
-		dx = (1-i1/90)*-1;
-		dy = i1/90*-1;
+		dx = -(1-i1/90);
+		dy = -(i1/90);
 	}
 	else if(d >= 180){
 		var i1 = d-180;
-		dx = i1/90*-1;
+		dx = -(i1/90);
 		dy = 1-i1/90;
 	}
 	else if(d >= 90){
@@ -109,7 +103,7 @@ function directionToXYPower(d) {
 		dy = i1/90;
 	} else {
 		dx = d/90;
-		dy = (1-d/90)*-1;
+		dy = -(1-d/90);
 	}
 	return {
 		x: dx,
@@ -123,7 +117,17 @@ function setBall() {
 	}
 }
 
+var lastTime = 0;
+var fpsCount = 0;
+
 function animate() {
+	var time = new Date().getTime();
+	fpsCount++;
+	if(time-lastTime >= 1000){
+		console.log(fpsCount,time);
+		lastTime = time;
+		fpsCount = 0;
+	}
 	requestAnimationFrame(animate);
 
 	c.clearRect(0,0,canvas.width,canvas.height)
